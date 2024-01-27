@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Clickable : Interactable
-{
-    public void OnClick()
+{    
+    public virtual void OnClick()
     {
         Debug.Log("Clicked!");
         Act();
