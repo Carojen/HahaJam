@@ -41,10 +41,10 @@ public class JokeSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("j"))
-        {
-            SetupJoke(jokeBank[Random.Range(0, jokeBank.Count)]);
-        }
+        //if (Input.GetKeyDown("j"))
+        //{
+        //    SetupJoke(jokeBank[Random.Range(0, jokeBank.Count)]);
+        //}
     }
 
     public void SpawnJoke()
