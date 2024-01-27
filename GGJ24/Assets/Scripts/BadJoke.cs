@@ -5,7 +5,7 @@ using UnityEngine;
 public class BadJoke : Clickable
 {
     [SerializeField] 
-    string jokeString = "This is a joke";
+    string[] jokeString = { "This is a joke", "Really?" };
 
     [SerializeField]
     string responseString = "hahaha";
@@ -16,13 +16,19 @@ public class BadJoke : Clickable
     [SerializeField]
     Effect onDefeat;
 
-    public string GetJoke() => jokeString;
+    public string[] GetJoke() => jokeString;
     public string GetAnswer() => responseString;
     public bool CheckResponded(string input)
     {
         bool defeated = input.Contains(responseString);        
         if (defeated) OnDefeat();
         return defeated;        
+    }
+
+    public void Setup(string[] joke, string laugh)
+    {
+        jokeString = joke;
+        responseString = laugh;
     }
 
     public bool CheckFail(string input)
