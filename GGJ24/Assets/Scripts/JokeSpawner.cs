@@ -26,11 +26,10 @@ public class JokeSpawner : MonoBehaviour
     private void InitializeJokes()
     {
         string[] jokes = jokeAsset.ToString().Split("\n");
-        string[] laughs = laughAsset.ToString().Split("\n");
+        string[] laughs = laughAsset.ToString().Split("\n", System.StringSplitOptions.RemoveEmptyEntries);
         foreach (string laugh in laughs)
         {
-            if (laugh == "") continue;
-            laughBank.Add(laugh);
+            laughBank.Add(laugh.Trim());
         }
         foreach (string joke in jokes)
         {
@@ -42,10 +41,10 @@ public class JokeSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("j"))
-        {
-            SetupJoke(jokeBank[Random.Range(0, jokeBank.Count)]);
-        }
+        //if (Input.GetKeyDown("j"))
+        //{
+        //    SetupJoke(jokeBank[Random.Range(0, jokeBank.Count)]);
+        //}
     }
 
     public void SpawnJoke()
@@ -61,6 +60,7 @@ public class JokeSpawner : MonoBehaviour
         position.x += Random.Range(-2f, 2f);
         position.z += Random.Range(-2f, 2f);
         newJoke.transform.SetPositionAndRotation(position, Quaternion.identity);
-        newJoke.Setup(joke, laughBank[Random.Range(0, laughBank.Count)]);        
+        newJoke.Setup(joke, laughBank[Random.Range(0, laughBank.Count)]);
+        GetComponent<InputManager>().SetActiveJoke(newJoke);
     }
 }

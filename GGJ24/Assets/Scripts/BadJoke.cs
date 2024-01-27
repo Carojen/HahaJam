@@ -14,7 +14,7 @@ public class BadJoke : Clickable
     Effect onClick;
 
     [SerializeField]
-    Effect onDefeat;
+    Effect onDefeat;    
 
     public string[] GetJoke() => jokeString;
     public string GetAnswer() => responseString;
