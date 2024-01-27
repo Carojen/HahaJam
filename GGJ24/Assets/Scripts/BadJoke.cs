@@ -20,10 +20,14 @@ public class BadJoke : Clickable
     public string GetAnswer() => responseString;
     public bool CheckResponded(string input)
     {
-        bool defeated = input.Contains(responseString);
-        Debug.Log($"Is {responseString} part of {input}? {(defeated ? "yes" : "no")}");
+        bool defeated = input.Contains(responseString);        
         if (defeated) OnDefeat();
         return defeated;        
+    }
+
+    public bool CheckFail(string input)
+    {
+        return !responseString.Contains(input);
     }
 
     public override void OnClick()

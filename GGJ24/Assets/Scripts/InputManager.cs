@@ -16,13 +16,17 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     TMPro.TextMeshProUGUI laughField;
 
+    [SerializeField]
+    Color wrongResponseColor = Color.red;
+    Color defaultResponseColor;
+
     Interactable activeTarget;
     string lastKey = "";
     string currentInput = "";
 
-    void Start()
+    private void Start()
     {
-
+        defaultResponseColor = laughField.color;
     }
 
     void Update()
@@ -39,15 +43,25 @@ public class InputManager : MonoBehaviour
         lastKey = Input.inputString;
         if (lastKey != "")
         {
+            if (currentInput == "")
+            {
+                laughField.color = defaultResponseColor;
+            }
             currentInput += lastKey;
-            if (activeTarget is BadJoke)
+            if (activeTarget is BadJoke && lastKey != "")
             {
                 laughField.text = currentInput;
+
                 BadJoke joke = activeTarget as BadJoke;
-                Debug.Log("This is a really bad joke");
-                if (joke.CheckResponded(currentInput))
+
+                if (joke.CheckFail(currentInput))
                 {
-                    Debug.Log("Joke defeated!");
+                    laughField.text = "!!!";
+                    laughField.color = wrongResponseColor;
+                    currentInput = "";
+                }
+                else if (joke.CheckResponded(currentInput))
+                {
                     activeTarget = null;
                     answerField.text = "";
                     jokeField.text = "JOKE DEFEATED";
