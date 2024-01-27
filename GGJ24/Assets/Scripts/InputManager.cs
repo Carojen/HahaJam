@@ -56,9 +56,11 @@ public class InputManager : MonoBehaviour
 
                 if (joke.CheckFail(currentInput))
                 {
-                    laughField.text = "!!!";
+                    laughField.text = "!! " + laughField.text + " !!";
                     laughField.color = wrongResponseColor;
+                    laughField.alpha = 1.0f;            
                     currentInput = "";
+                    lastKey = "";
                 }
                 else if (joke.CheckResponded(currentInput))
                 {
