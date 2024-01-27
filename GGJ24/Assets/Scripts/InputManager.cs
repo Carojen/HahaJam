@@ -11,6 +11,8 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     TMPro.TextMeshProUGUI jokeField;
     [SerializeField]
+    TMPro.TextMeshProUGUI secondJokeField;
+    [SerializeField]
     Image jokeBackground;
 
     [SerializeField]
@@ -51,14 +53,15 @@ public class InputManager : MonoBehaviour
             scheme.textColor = textColors[Random.Range(0, textColors.Count)];
         }
 
-        defaultResponseColor = scheme.textColor;
-        jokeField.color = defaultResponseColor;        
+        jokeField.color = scheme.textColor;
+        secondJokeField.color = scheme.textColor;
+        jokeBackground.material.color = scheme.backgroundColor;
     }
 
 
     private void Start()
     {
-        defaultResponseColor = laughField.color;
+        defaultResponseColor = Color.white;
     }
 
     void Update()
@@ -72,6 +75,11 @@ public class InputManager : MonoBehaviour
 
     private void UpdateJokeMode()
     {
+        if(activeTarget == null && Input.GetKeyDown(KeyCode.Return))
+        {
+            GetComponent<JokeSpawner>().SpawnJoke();
+        }
+
         lastKey = Input.inputString;
 
         if (activeTarget is BadJoke && lastKey != "")
@@ -80,9 +88,9 @@ public class InputManager : MonoBehaviour
 
             if (lastKey[0] == (char)8 && currentInput.Length > 0)
             {
-                currentInput = currentInput.Remove(currentInput.Length - 1);
+                currentInput = currentInput.Remove(currentInput.Length - 1);                
             }
-            else
+            else if(lastKey != "\n")
             {
                 currentInput += lastKey;
             }
@@ -102,8 +110,22 @@ public class InputManager : MonoBehaviour
                 activeTarget = null;
                 answerField.text = "";
                 jokeField.text = "JOKE DEFEATED";
+                secondJokeField.text = "";
+                laughField.text = "";
+                currentInput = "";
             }
         }
+    }
+
+    public void SetActiveJoke(BadJoke newTarget)
+    {
+        currentInput = "";
+        activeTarget = newTarget;
+        string[] jokeParts = newTarget.GetJoke();
+        jokeField.text = jokeParts.Length > 0 ? jokeParts[0] : "???";
+        secondJokeField.text = jokeParts.Length > 1 ? jokeParts[1] : "???";
+        answerField.text = newTarget.GetAnswer();
+        ChangeColorScheme();
     }
     private void TryClick()
     {
@@ -122,11 +144,7 @@ public class InputManager : MonoBehaviour
                 (newTarget as Clickable).OnClick();
                 if (newTarget is BadJoke)
                 {
-                    BadJoke joke = newTarget as BadJoke;
-                    string[] jokeParts = joke.GetJoke();
-                    jokeField.text = jokeParts.Length > 0 ? jokeParts[0] : "???";
-                    answerField.text = joke.GetAnswer();
-                    ChangeColorScheme();
+                    SetActiveJoke(newTarget as BadJoke);
                 }
                 else
                 {
