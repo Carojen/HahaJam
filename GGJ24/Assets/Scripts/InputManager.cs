@@ -79,6 +79,10 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         if (finished) return;
         if (Input.GetMouseButtonDown(0))
         {
