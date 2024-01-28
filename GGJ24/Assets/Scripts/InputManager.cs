@@ -16,6 +16,9 @@ public class InputManager : MonoBehaviour
     Image jokeBackground;
 
     [SerializeField]
+    Image dadCharacter;
+
+    [SerializeField]
     float maxAllowedSecondsToAnswer = 10f;
 
     [SerializeField]
@@ -43,6 +46,8 @@ public class InputManager : MonoBehaviour
     List<Sprite> backgrounds = new();
     [SerializeField]
     List<Color> textColors = new();
+    [SerializeField]
+    List<Sprite> dadSprites = new();
 
     private void ChangeColorScheme()
     {
@@ -55,6 +60,10 @@ public class InputManager : MonoBehaviour
         if (textColors.Count > 0)
         {
             textColor = textColors[Random.Range(0, textColors.Count)];
+        }
+        if (dadSprites.Count > 0)
+        {
+            dadCharacter.sprite = dadSprites[Random.Range(0, dadSprites.Count)];
         }
 
         jokeField.color = textColor;
